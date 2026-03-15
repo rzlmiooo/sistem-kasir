@@ -1,8 +1,10 @@
 import { Elysia, t } from 'elysia';
 import { db } from './db';
 import { products } from './schema';
+import swagger from '@elysiajs/swagger';
 
 const app = new Elysia()
+  .use(swagger())
   .get('/api/products', async () => {
     const allProducts = await db.select().from(products);
     return allProducts;
