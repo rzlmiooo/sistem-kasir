@@ -11,7 +11,8 @@
     "postgres": "^3.4.8"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "drizzle-kit": "^0.31.9"
   },
   "module": "src/index.js"
 }

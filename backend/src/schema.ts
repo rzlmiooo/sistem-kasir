@@ -3,6 +3,6 @@ import { pgTable, serial, text, integer } from 'drizzle-orm/pg-core';
 export const products = pgTable('products', {
   id: serial('id').primaryKey(),
   name: text('name').notNull(),
-  price: integer('price').notNull(), // Pake integer buat harga (misal Rp 15000)
+  price: integer('price').notNull(),
   stock: integer('stock').notNull().default(0),
 });
