@@ -8,6 +8,13 @@
       "when": 1773561206313,
       "tag": "0000_dazzling_steel_serpent",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1773632856227,
+      "tag": "0001_absent_tusk",
+      "breakpoints": true
     }
   ]
 }

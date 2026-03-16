@@ -1,10 +1,15 @@
 import type { PageServerLoad } from './$types';
+import postData from '$lib/api/postData';
 
 export const load: PageServerLoad = async () => {
-  const res = await fetch('http://localhost:3000/api/products');
-  const products = await res.json();
+  const response = await postData(
+    "/api/v1/products/product-data",
+    {}
+  );
 
-  return { 
-    products 
+  const products = response.data.data;
+
+  return {
+    products
   };
 };

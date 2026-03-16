@@ -1,4 +1,4 @@
-notes
+file: notes.md
 
 LawuPOS
 
