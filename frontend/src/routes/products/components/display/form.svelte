@@ -5,7 +5,7 @@
   import { Label } from "$lib/components/ui/label";
   import * as Dialog from "$lib/components/ui/dialog";
 
-  let { mode, product, open = $bindable(false) } = $props();
+  let { mode, product, selectedCount = 0, open = $bindable(false) } = $props();
 
   let name = $state("");
   let price = $state(0);
@@ -22,12 +22,16 @@
   const dispatch = createEventDispatcher();
 
   function submit() {
-    dispatch("submit", {
-      id: product?.id,
-      name,
-      price,
-      stock
-    });
+    if (mode === "deleteMultiple") {
+      dispatch("submitMultiple");
+    } else {
+      dispatch("submit", {
+        id: product?.id,
+        name,
+        price,
+        stock
+      });
+    }
   }
 </script>
 
@@ -36,17 +40,19 @@
     
     <Dialog.Header>
       <Dialog.Title>
-        {mode === "create" ? "Create Product" : mode === "edit" ? "Edit Product" : "Delete Product"}
+        {mode === "create" ? "Create Product" : 
+         mode === "edit" ? "Edit Product" : 
+         mode === "deleteMultiple" ? "Delete Multiple Products" : "Delete Product"}
       </Dialog.Title>
       <Dialog.Description>
-        {mode === "delete" 
-          ? "Are you sure you want to delete this product? This action cannot be undone." 
+        {mode === "delete" || mode === "deleteMultiple"
+          ? "Are you sure? This action cannot be undone." 
           : "Fill in the details below to save the product."}
       </Dialog.Description>
     </Dialog.Header>
 
     <div class="space-y-4 py-4">
-      {#if mode !== "delete"}
+      {#if mode === "create" || mode === "edit"}
         <div class="space-y-2">
           <Label for="name">Name</Label>
           <Input id="name" placeholder="Product Name" bind:value={name} />
@@ -62,10 +68,18 @@
             <Input id="stock" type="number" placeholder="0" bind:value={stock} />
           </div>
         </div>
-      {:else}
+      
+      {:else if mode === "delete"}
         <div class="rounded-md bg-destructive/15 p-3 text-destructive">
           <p class="text-sm font-medium">
             Delete product: <b>{product?.name}</b>?
+          </p>
+        </div>
+      
+      {:else if mode === "deleteMultiple"}
+        <div class="rounded-md bg-destructive/15 p-3 text-destructive">
+          <p class="text-sm font-medium">
+            You are about to delete <b>{selectedCount} selected products</b>. Are you absolutely sure?
           </p>
         </div>
       {/if}
@@ -76,10 +90,10 @@
         Cancel
       </Button>
       <Button 
-        variant={mode === "delete" ? "destructive" : "default"} 
+        variant={mode === "delete" || mode === "deleteMultiple" ? "destructive" : "default"} 
         onclick={submit}
       >
-        {mode === "delete" ? "Confirm Delete" : "Save Changes"}
+        {mode === "delete" || mode === "deleteMultiple" ? "Confirm Delete" : "Save Changes"}
       </Button>
     </Dialog.Footer>
 
